@@ -1,0 +1,1 @@
+This will initially be a back end on it's own. And it will manage the data taken from the AirQuality monitor I created.

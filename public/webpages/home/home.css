@@ -1,0 +1,21 @@
+.container_display{
+    width: 30em;
+    height: 30em;
+    align-content: center;
+    display: flexbox;
+    flex-wrap: wrap;
+}
+
+.main_display{
+    border: 0.2em solid black;
+    border-radius: 1em;
+    width: 70%;
+    height: 50%;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+
+.main_display > div{
+    border: 0.2em solid black;
+    border-radius: 1em;
+}
