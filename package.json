@@ -16,10 +16,12 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.2",
+    "@types/mysql": "^2.15.27",
     "nodemon": "^3.1.10",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mysql": "^2.18.1"
   }
 }
