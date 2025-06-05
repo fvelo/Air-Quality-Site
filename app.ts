@@ -11,13 +11,7 @@ import { NextFunction, Request, Response } from "express";
 const express = require('express');
 const path = require('path');
 const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
-const { SOLUTION_KEYS } = require(path.join(__dirname, 'sensibleData.js'));
-
-// 
-// CONSTANTS
-// 
-
-const PUBLIC_KEY_API = 321319288285179258363347859223;
+const { API_PASSWORD } = require(path.join(__dirname, 'sensibleData.js'));
 
 // 
 // Initializing server
@@ -80,15 +74,13 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
         pm2_5: number,
         co2: number,
         voc: number,
-        privateKey: number
+        apiPassword: string
     }
 
-    const { temperature, humidity, pm0, pm2_5, co2, voc, privateKey } = req.body as reqAirData;
+    const { temperature, humidity, pm0, pm2_5, co2, voc, apiPassword } = req.body as reqAirData;
 
     // check if data comes from a secure source
-    const resultCheck = privateKey * PUBLIC_KEY_API;
-    // console.log(`public key: ${PUBLIC_KEY_API}, sent private key: ${privateKey}, resultcheck: ${resultCheck}, sulutionkeys: ${SOLUTION_KEYS}`);
-    if (resultCheck != SOLUTION_KEYS) return res.status(400).json({ isSuccess: false, message: 'Wrong private key' });
+    if (apiPassword !== API_PASSWORD) return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
 
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
