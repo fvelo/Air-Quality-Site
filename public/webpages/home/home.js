@@ -14,6 +14,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const apiEndpoint = '/api/v0/last-entry-data';
 document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
     const airQualityData = yield requestAirQualityData(apiEndpoint);
+    popolateDisplayWithData(airQualityData);
 }));
 function requestAirQualityData(apiEndpoint) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -31,4 +32,22 @@ function requestAirQualityData(apiEndpoint) {
         // console.log(airQualityData);
         return airQualityData;
     });
+}
+function popolateDisplayWithData(airQualityData) {
+    const temperatureElement = document.getElementById('temperature');
+    const humidityElement = document.getElementById('humidity');
+    const pm0Element = document.getElementById('pm0');
+    const pm2_5Element = document.getElementById('pm2_5');
+    const co2Element = document.getElementById('co2');
+    const vocElement = document.getElementById('voc');
+    const dateTimeElement = document.getElementById('time_last_refresh');
+    const overallScoreElement = document.getElementById('overall_score');
+    const { temperature, humidity, pm0, pm2_5, co2, voc, dateTimeEntry } = airQualityData;
+    temperatureElement.innerHTML = temperature;
+    humidityElement.textContent = humidity;
+    pm0Element.textContent = pm0;
+    pm2_5Element.textContent = pm2_5;
+    co2Element.textContent = co2;
+    vocElement.textContent = voc;
+    dateTimeElement.textContent = dateTimeEntry;
 }

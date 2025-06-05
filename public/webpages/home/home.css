@@ -23,7 +23,7 @@ header{
     height: 30em;
 }
 
-.main_display{
+.data_display{
     border: 0.2em solid azure;
     border-radius: 1em;
     width: 60%;
@@ -33,12 +33,15 @@ header{
     grid-template-columns: 33% 33% 33%;
 }
 
-.main_display > div{
+.data_display > div{
     border: 0.2em solid azure;
     border-radius: 1em;
+    color: azure;
+    text-align: center;
+    padding: 2em;
 }
 
-.overall_score{
+#overall_score{
     grid-column-start: 1;
     grid-column-end: 4;
 }
