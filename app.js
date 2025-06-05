@@ -18,6 +18,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const path = require('path');
 const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
+const { SOLUTION_KEYS } = require(path.join(__dirname, 'sensibleData.js'));
+// 
+// CONSTANTS
+// 
+const PUBLIC_KEY_API = 321319288285179258363347859223;
 // 
 // Initializing server
 // 
@@ -54,6 +59,25 @@ app.get('/api/v0/last-entry-data', (req, res) => __awaiter(void 0, void 0, void 
         res.status(200).json({ isSuccess: true, data: queryResult });
     }
     catch (error) {
-        res.status(400).json({ isSuccess: false, message: 'Error in request' });
+        res.status(400).json({ isSuccess: false, message: error });
+    }
+}));
+// insert air data in db
+app.post('/api/v0/insert-air-data', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { temperature, humidity, pm0, pm2_5, co2, voc, privateKey } = req.body;
+    // check if data comes from a secure source
+    const resultCheck = privateKey * PUBLIC_KEY_API;
+    // console.log(`public key: ${PUBLIC_KEY_API}, sent private key: ${privateKey}, resultcheck: ${resultCheck}, sulutionkeys: ${SOLUTION_KEYS}`);
+    if (resultCheck != SOLUTION_KEYS)
+        return res.status(400).json({ isSuccess: false, message: 'Wrong private key' });
+    try {
+        // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
+        const sqlQuery = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
+        const valuesToEscape = [temperature, humidity, pm0, pm2_5, co2, voc];
+        const queryResult = yield handleSqlQuery(sqlQuery, valuesToEscape);
+        res.status(200).json({ isSuccess: true, message: 'Insert successful' });
+    }
+    catch (error) {
+        res.status(400).json({ isSuccess: false, message: error });
     }
 }));
