@@ -50,9 +50,10 @@ app.get('/', (req, res) => {
 app.get('/api/v0/last-entry-data', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
-        const sqlQuery = 'SELECT * FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
+        const sqlQuery = 'SELECT temperature, humidity, pm0, pm2_5, co2, voc, dateTimeEntry FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
         const queryResult = yield handleSqlQuery(sqlQuery);
-        res.status(200).json({ isSuccess: true, data: queryResult });
+        const airData = queryResult[0];
+        res.status(200).json({ isSuccess: true, data: airData });
     }
     catch (error) {
         res.status(400).json({ isSuccess: false, message: error });

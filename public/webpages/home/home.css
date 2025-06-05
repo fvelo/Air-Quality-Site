@@ -38,7 +38,7 @@ header{
     border-radius: 1em;
 }
 
-.gigio{
+.overall_score{
     grid-column-start: 1;
     grid-column-end: 4;
 }
