@@ -4,51 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/home/home.css">
-    <link rel="favicon" href="assets/images/favicon.ico" type="image/x-icon">
-    <title>Home - Air Quality</title>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <title>Air Quality Dashboard</title>
 </head>
 <body>
     <header>
-        <h1>Air Quality Monitor Home Page</h1>
-        <p>Main page for the diplaying of the data gathered through my DIY Air Quality Monitor</p>
+        <h1>Air Quality Monitor</h1>
+        <p class="description">Live data from my DIY air quality sensor setup</p>
     </header>
-    <div class="container_display">
-        <div class="on_display">
-            <p id="time_last_refresh">
 
-            </p>
-            <button id="btn_refresh_data">
+    <div class="data-grid">
+        <div class="card"><h2>Temperature</h2><span id="temperature">-- °C</span></div>
+        <div class="card"><h2>Humidity</h2><span id="humidity">-- %</span></div>
+        <div class="card"><h2>PM0</h2><span id="pm0">-- µg/m³</span></div>
+        <div class="card"><h2>PM2.5</h2><span id="pm2_5">-- µg/m³</span></div>
+        <div class="card"><h2>CO2</h2><span id="co2">-- ppm</span></div>
+        <div class="card"><h2>VOC</h2><span id="voc">-- ppb</span></div>
+        <div class="card" style="grid-column: span 2;"><h2>Overall Score</h2><span id="overall_score">--</span></div>
+    </div>
 
-            </button>
-        </div>
-        <div class="data_display">
-            <div id="temperature"></div>
-            <div id="humidity"></div>
-            <div id="pm0"></div>
-            <div id="pm2_5"></div>
-            <div id="co2"></div>
-            <div id="voc"></div>
-            <div id="overall_score"></div>
-        </div>
+    <div class="explanation">
+        <p><strong>Temperature:</strong> Indicates the ambient air temperature in degrees Celsius.</p>
+        <p><strong>Humidity:</strong> Shows the percentage of water vapor present in the air.</p>
+        <p><strong>PM0:</strong> Ultra-fine particulate matter with diameter < 0.3μm; often from combustion sources.</p>
+        <p><strong>PM2.5:</strong> Particulate matter < 2.5μm; can penetrate lungs and is linked to health issues.</p>
+        <p><strong>CO2:</strong> Carbon dioxide concentration in parts per million (ppm); high levels may indicate poor ventilation.</p>
+        <p><strong>VOC:</strong> Volatile Organic Compounds in parts per billion (ppb); emitted by paints, cleaners, and more.</p>
+        <p><strong>Overall Score:</strong> A calculated value summarizing the air quality based on all sensor data.</p>
     </div>
-    <div class="conainer_explenation">
-        <div>
-            <p>temp: </p>
-            <p>humidity: </p>
-            <p>oxygen: </p>
-            <p>nano_particles: </p>
-            <p>toxic_gas: </p>
-            <p>gigio</p>
-        </div>
-    </div>
-    <div class="container_graph">
-        <div class="left_bar"></div>
-        <div class="graph_display"></div>
-        <div class="bottom_bar"></div>
-    </div>
+
     <footer>
-        <p>Sto morendo asfisiato!!!</p>
+        <p>🤯 Breathing this? You brave... <br> Crafted with love and low decoration skills.</p>
     </footer>
-    <script src="/home/home.js"></script>
 </body>
 </html>

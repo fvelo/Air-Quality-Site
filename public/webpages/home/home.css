@@ -1,47 +1,67 @@
-*{
+:root {
+    --bg-color: #1e1e2f;
+    --card-bg: #2e2e3f;
+    --text-color: #e0e0ff;
+    --accent-color: #00c9a7;
+}
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
-
-body{
-    background-color: #100e17;
-    font-family: 'Open Sans', sans-serif;
-    align-content: center;
+body {
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    padding: 2rem;
 }
-
-h1, p{
-    color: azure;
-}
-
-header{
-    align-self: center;
-    justify-self: center;
-}
-
-.container_display{
-    /* align-content: center; */
-    height: 30em;
-}
-
-.data_display{
-    border: 0.2em solid azure;
-    border-radius: 1em;
-    width: 60%;
-    margin: auto;
-    height: 50%;
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-}
-
-.data_display > div{
-    border: 0.2em solid azure;
-    border-radius: 1em;
-    color: azure;
+header {
     text-align: center;
-    padding: 2em;
+    margin-bottom: 2rem;
 }
-
-#overall_score{
-    grid-column-start: 1;
-    grid-column-end: 4;
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+p.description {
+    color: #aaa;
+    font-size: 1rem;
+}
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+.card span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+.explanation {
+    margin-top: 2rem;
+    background-color: #181826;
+    padding: 1.5rem;
+    border-radius: 1rem;
+}
+.explanation p {
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+}
+footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
 }
