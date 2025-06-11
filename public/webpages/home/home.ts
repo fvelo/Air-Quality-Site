@@ -6,13 +6,20 @@ const apiEndpoint: string = '/api/v0/last-entry-data';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const airQualityData = await requestAirQualityData(apiEndpoint);
-    console.log(airQualityData);
+    // console.log(airQualityData);
     popolateDisplayWithData(airQualityData);
+    setInterval( async () => {
+        const airQualityData = await requestAirQualityData(apiEndpoint);
+        // console.log(airQualityData);
+        popolateDisplayWithData(airQualityData);
+        // console.log('in interval');
+    }, 1000 * 10); // every 10 seconds
+
 });
 
 async function requestAirQualityData(apiEndpoint: string){
     const response: Response = await fetch(apiEndpoint);
-    console.log(response);
+    // console.log(response);
     // Check if the response is OK (status 200-299)
     if(!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,5 +51,5 @@ function popolateDisplayWithData(airQualityData: any){
     pm2_5Element.textContent = `${pm2_5} µg/m³`;
     co2Element.textContent = `${co2} ppm`;
     vocElement.textContent = `${voc} ppb`;
-    dateTimeElement.textContent = `${dateTimeEntry}`;
+    // dateTimeElement.textContent = `${dateTimeEntry}`;
 }
