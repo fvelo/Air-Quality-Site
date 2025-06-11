@@ -6,6 +6,7 @@ const apiEndpoint: string = '/api/v0/last-entry-data';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const airQualityData = await requestAirQualityData(apiEndpoint);
+    console.log(airQualityData);
     popolateDisplayWithData(airQualityData);
 });
 
@@ -37,11 +38,11 @@ function popolateDisplayWithData(airQualityData: any){
     const overallScoreElement = document.getElementById('overall_score') as Element;
 
     const { temperature, humidity, pm0, pm2_5, co2, voc, dateTimeEntry } = airQualityData;
-    temperatureElement.innerHTML = temperature;
-    humidityElement.textContent = humidity;
-    pm0Element.textContent = pm0;
-    pm2_5Element.textContent = pm2_5;
-    co2Element.textContent = co2;
-    vocElement.textContent = voc;
-    dateTimeElement.textContent = dateTimeEntry;
+    temperatureElement.innerHTML = `${temperature} °C`;
+    humidityElement.textContent = `${humidity} %`;
+    pm0Element.textContent = `${pm0} µg/m³`;
+    pm2_5Element.textContent = `${pm2_5} µg/m³`;
+    co2Element.textContent = `${co2} ppm`;
+    vocElement.textContent = `${voc} ppb`;
+    dateTimeElement.textContent = `${dateTimeEntry}`;
 }
