@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 app.get('/api/v0/last-entry-data', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
-        const sqlQuery = 'SELECT temperature, humidity, pm0, pm2_5, co2, voc, dateTimeEntry FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
+        const sqlQuery = 'SELECT temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
         const queryResult = yield handleSqlQuery(sqlQuery);
         const airData = queryResult[0];
         res.status(200).json({ isSuccess: true, data: airData });
@@ -61,14 +61,14 @@ app.get('/api/v0/last-entry-data', (req, res) => __awaiter(void 0, void 0, void 
 }));
 // insert air data in db
 app.post('/api/v0/insert-air-data', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { temperature, humidity, pm0, pm2_5, co2, voc, apiPassword } = req.body;
+    const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body;
     // check if data comes from a secure source
     if (apiPassword !== API_PASSWORD)
         return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
         const sqlQuery = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
-        const valuesToEscape = [temperature, humidity, pm0, pm2_5, co2, voc];
+        const valuesToEscape = [temperature, humidity, pm1, pm2_5, pm10, co2, voc];
         const queryResult = yield handleSqlQuery(sqlQuery, valuesToEscape);
         res.status(200).json({ isSuccess: true, message: 'Insert successful' });
     }

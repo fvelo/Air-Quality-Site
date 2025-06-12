@@ -37,19 +37,22 @@ async function requestAirQualityData(apiEndpoint: string){
 function popolateDisplayWithData(airQualityData: any){
     const temperatureElement = document.getElementById('temperature') as Element;
     const humidityElement = document.getElementById('humidity') as Element;
-    const pm0Element = document.getElementById('pm0') as Element;
+    const pm0Element = document.getElementById('pm1') as Element;
     const pm2_5Element = document.getElementById('pm2_5') as Element;
+    const pm10Element = document.getElementById('pm10') as Element;
     const co2Element = document.getElementById('co2') as Element;
     const vocElement = document.getElementById('voc') as Element;
     const dateTimeElement = document.getElementById('time_last_refresh') as Element;
     const overallScoreElement = document.getElementById('overall_score') as Element;
 
-    const { temperature, humidity, pm0, pm2_5, co2, voc, dateTimeEntry } = airQualityData;
+    const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry } = airQualityData;
     temperatureElement.innerHTML = `${temperature} °C`;
     humidityElement.textContent = `${humidity} %`;
-    pm0Element.textContent = `${pm0} µg/m³`;
+    pm0Element.textContent = `${pm1} µg/m³`;
     pm2_5Element.textContent = `${pm2_5} µg/m³`;
-    co2Element.textContent = `${co2} ppm`;
-    vocElement.textContent = `${voc} ppb`;
+    pm10Element.textContent = `${pm10} µg/m³`;
+    co2Element.textContent = `(wip)`;
+    // co2Element.textContent = `${co2} ppm`;
+    vocElement.textContent = `${voc}`;
     // dateTimeElement.textContent = `${dateTimeEntry}`;
 }

@@ -57,7 +57,7 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/api/v0/last-entry-data', async (req: Request, res: Response) => {
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
-        const sqlQuery: string = 'SELECT temperature, humidity, pm0, pm2_5, co2, voc, dateTimeEntry FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
+        const sqlQuery: string = 'SELECT temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
         const queryResult: any[] = await handleSqlQuery(sqlQuery);
         const airData: object = queryResult[0];
         res.status(200).json({ isSuccess: true, data: airData });
@@ -71,14 +71,15 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
     type reqAirData = {
         temperature: number,
         humidity: number,
-        pm0: number,
+        pm1: number,
         pm2_5: number,
+        pm10: number,
         co2: number,
         voc: number,
         apiPassword: string
     }
 
-    const { temperature, humidity, pm0, pm2_5, co2, voc, apiPassword } = req.body as reqAirData;
+    const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body as reqAirData;
 
     // check if data comes from a secure source
     if (apiPassword !== API_PASSWORD) return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
@@ -86,7 +87,7 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
         const sqlQuery: string = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
-        const valuesToEscape: number[] = [temperature, humidity, pm0, pm2_5, co2, voc]
+        const valuesToEscape: number[] = [temperature, humidity, pm1, pm2_5, pm10, co2, voc]
         const queryResult: any[] = await handleSqlQuery(sqlQuery, valuesToEscape);
         res.status(200).json({ isSuccess: true, message: 'Insert successful' });
     } catch (error) {
