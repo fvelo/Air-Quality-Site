@@ -45,13 +45,11 @@ This repository contains a Node.js/TypeScript back-end API and a static front-en
 ### Installation
 
 1. **Clone the repo**  
-   
    ```bash
    git clone https://github.com/fvelo/Air-Quality-Site.git
    cd Air-Quality-Site
    ```
 2. **Install dependencies**
-
    ```bash
    npm install
    ```
@@ -61,20 +59,19 @@ This repository contains a Node.js/TypeScript back-end API and a static front-en
    cp .env.example .env
    ```
 2. ***Edit .env and fill in your credentials and settings:***
-| Variable      | Description                 | Example           |
-| ------------- | --------------------------- | ----------------- |
-| `DB_HOST`     | Database host               | `localhost`       |
-| `DB_PORT`     | Database port               | `5432`            |
-| `DB_USER`     | Database username           | `airquality_user` |
-| `DB_PASSWORD` | Database user password      | `your_password`   |
-| `DB_NAME`     | Database name               | `airquality`      |
-| `PORT`        | Port for the Express server | `3000`            |
-
+   ```bash
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=airquality_user
+   DB_PASSWORD=your_password
+   DB_NAME=airquality
+   PORT=3000
+   ```
 ### Running locally
   1. For dev with nodemon
-    ```
-    npm start
-    ```
+     ```bash
+      npm run build
+     ```
   2. In docker
      ```bash
      npm run build
