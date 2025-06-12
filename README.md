@@ -61,15 +61,18 @@ This repository contains a Node.js/TypeScript back-end API and a static front-en
    cp .env.example .env
    ```
 2. ***Edit .env and fill in your credentials and settings:***
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=airquality_user
-   DB_PASSWORD=your_password
-   DB_NAME=airquality
-   PORT=3000
+| Variable      | Description                 | Example           |
+| ------------- | --------------------------- | ----------------- |
+| `DB_HOST`     | Database host               | `localhost`       |
+| `DB_PORT`     | Database port               | `5432`            |
+| `DB_USER`     | Database username           | `airquality_user` |
+| `DB_PASSWORD` | Database user password      | `your_password`   |
+| `DB_NAME`     | Database name               | `airquality`      |
+| `PORT`        | Port for the Express server | `3000`            |
+
 ### Running locally
   1. For dev with nodemon
-    ```bash
+    ```
     npm start
     ```
   2. In docker
