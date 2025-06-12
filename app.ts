@@ -6,19 +6,20 @@ import { NextFunction, Request, Response } from "express";
 
 // 
 //modules required for this porject
-// 
+//
 
+import dotenv from 'dotenv';
+dotenv.config();
 const express = require('express');
 const path = require('path');
 const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
-const { API_PASSWORD } = require(path.join(__dirname, 'sensibleData.js'));
 
 // 
 // Initializing server
 // 
 
 const app = express();
-app.listen(3000, console.log('Server listening on http://localhost:3000 ...'));
+app.listen(process.env.PORT, console.log(`Server listening on http://localhost:${process.env.PORT} ...`));
 
 // 
 // Decode json from post API resquest
@@ -82,7 +83,7 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
     const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body as reqAirData;
 
     // check if data comes from a secure source
-    if (apiPassword !== API_PASSWORD) return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
+    if (apiPassword !== process.env.API_PASSWORD) return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
 
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';

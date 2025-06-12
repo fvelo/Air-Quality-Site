@@ -1,17 +1,16 @@
 import { PoolConnection } from "mysql";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const mysql = require('mysql');
 
-const homelabURI: string = '192.168.1.32'
-const homelabURIport: string = '3306';
-
 const conPool: PoolConnection = mysql.createPool({
     connectionLimit: 10,
-    host: homelabURI,
-    port: homelabURIport,
-    user: "nodeUser",
-    password: "NonPensoSiaDavveroNecessarioAvereUnaPasswordCosiDifficile",
-    database: 'air-quality-monitor-data'
+    host: process.env.DB_HOST as string,
+    port: process.env.DB_PORT as string,
+    user: process.env.DB_USER as string,
+    password: process.env.DB_USER_PASSWORD as string,
+    database: process.env.DB_NAME as string
 });
 
 const handleSqlQuery = (sqlQuery: string, valuesToEscape: any[] = [null]) => {

@@ -11,19 +11,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // 
 //modules required for this porject
-// 
+//
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const express = require('express');
 const path = require('path');
 const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
-const { API_PASSWORD } = require(path.join(__dirname, 'sensibleData.js'));
 // 
 // Initializing server
 // 
 const app = express();
-app.listen(3000, console.log('Server listening on http://localhost:3000 ...'));
+app.listen(process.env.PORT, console.log(`Server listening on http://localhost:${process.env.PORT} ...`));
 // 
 // Decode json from post API resquest
 // 
@@ -63,7 +67,7 @@ app.get('/api/v0/last-entry-data', (req, res) => __awaiter(void 0, void 0, void 
 app.post('/api/v0/insert-air-data', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body;
     // check if data comes from a secure source
-    if (apiPassword !== API_PASSWORD)
+    if (apiPassword !== process.env.API_PASSWORD)
         return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
