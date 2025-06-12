@@ -4,12 +4,12 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "node app.js",
+    "build": "node app.js",
     "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fvelo/myairqualitysite"
+    "url": "https://github.com/fvelo/Air-Quality-Site"
   },
   "author": "Francesco Velo",
   "license": "ISC",
