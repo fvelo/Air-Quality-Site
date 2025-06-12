@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/home/home.css">
-    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/home/assets/images/favicon.ico" type="image/x-icon">
     <title>Air Quality Dashboard</title>
 </head>
 
 <body>
     <header>
-        <h1>Air Quality Monitor</h1>
+        <h1>Air Quality Dashboard</h1>
         <p class="description">Live data from my DIY air quality sensor setup</p>
     </header>
 
@@ -45,10 +45,11 @@
     <div class="explanation">
         <p><strong>Temperature:</strong> Indicates the ambient air temperature in degrees Celsius.</p>
         <p><strong>Humidity:</strong> Shows the percentage of water vapor present in the air.</p>
-        <p><strong>PM0:</strong> Ultra-fine particulate matter with diameter < 0.3μm; often from combustion sources.</p>
-        <p><strong>PM2.5:</strong> Particulate matter < 2.5μm; can penetrate lungs and is linked to health issues.</p>
-        <p><strong>CO2:</strong> Carbon dioxide concentration in parts per million (ppm); high levels may indicate poor ventilation.</p>
-        <p><strong>VOC:</strong> Volatile Organic Compounds in parts per billion (ppb); emitted by paints, cleaners, and more.</p>
+        <p><strong>PM1:</strong> Ultra-fine particulate matter with diameter < 1μm; often from combustion sources. Healthy concentrations are < 10 µg/m³.</p>
+        <p><strong>PM2.5:</strong> Particulate matter < 2.5μm; can penetrate deep into lungs (e.g. vehicle exhaust, wildfires). Safe avarage concentrations for 24-hour period < 15 µg/m³.</p>
+        <p><strong>PM10:</strong> Particulate matter < 10μm; particles from dust, pollen, mold, and construction. Safe avarage concentrations for 24-hour period < 45 µg/m³.</p>
+        <p><strong>CO2:</strong> Carbon dioxide concentration in parts per million (ppm); safe indoor levels are 400–1000 ppm; above 1200 ppm you should ventilated the space.</p>
+        <p><strong>VOC:</strong> Organic chemicals from paints, cleaners, and off-gassing. Using a 1–500 VOC index, 1–100 is good, > 100 indicates elevated indoor VOCs.</p>
         <p><strong>Overall Score:</strong> A calculated value summarizing the air quality based on all sensor data.</p>
     </div>
 
