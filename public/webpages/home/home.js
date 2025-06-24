@@ -56,8 +56,8 @@ function popolateDisplayWithData(airQualityData) {
     pm0Element.textContent = `${pm1} µg/m³`;
     pm2_5Element.textContent = `${pm2_5} µg/m³`;
     pm10Element.textContent = `${pm10} µg/m³`;
-    co2Element.textContent = `(wip)`;
-    // co2Element.textContent = `${co2} ppm`;
-    vocElement.textContent = `${voc}`;
+    co2Element.textContent = `${co2} ppm`;
+    // vocElement.textContent = `${voc}`;
+    vocElement.textContent = `(wip)`;
     // dateTimeElement.textContent = `${dateTimeEntry}`;
 }

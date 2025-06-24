@@ -87,7 +87,7 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
 
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
-        const sqlQuery: string = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
+        const sqlQuery: string = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
         const valuesToEscape: number[] = [temperature, humidity, pm1, pm2_5, pm10, co2, voc]
         const queryResult: any[] = await handleSqlQuery(sqlQuery, valuesToEscape);
         res.status(200).json({ isSuccess: true, message: 'Insert successful' });

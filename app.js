@@ -71,7 +71,7 @@ app.post('/api/v0/insert-air-data', (req, res) => __awaiter(void 0, void 0, void
         return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
-        const sqlQuery = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
+        const sqlQuery = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
         const valuesToEscape = [temperature, humidity, pm1, pm2_5, pm10, co2, voc];
         const queryResult = yield handleSqlQuery(sqlQuery, valuesToEscape);
         res.status(200).json({ isSuccess: true, message: 'Insert successful' });
