@@ -1,5 +1,5 @@
 // 
-// Automaticcally added imports type
+// Automatically added imports type
 // 
 
 import { NextFunction, Request, Response } from "express";
@@ -19,7 +19,7 @@ const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
 // 
 
 const app = express();
-app.listen(process.env.PORT, console.log(`Server listening on http://localhost:${process.env.PORT} ...`));
+app.listen(process.env.PORT, console.log(`Server listening on http://localhost:${process.env.PORT}...`));
 
 // 
 // Decode json from post API resquest
@@ -32,7 +32,9 @@ app.use(express.urlencoded({ extended: true })); //this middleware automatically
 // Paths
 // 
 
-const webPagesPath: string = path.join(__dirname, 'public', 'webpages');
+const html_css_files: string = path.join('public', 'webpages');
+const js_files: string = path.join(__dirname, '../', 'frontend');
+
 
 // 
 // Middlewares
@@ -44,10 +46,13 @@ const webPagesPath: string = path.join(__dirname, 'public', 'webpages');
 // Static web pages endpoints
 //
 
-app.use(`/`, express.static(webPagesPath));
+// console.log('running from:', __dirname);
+app.use(`/`, express.static(html_css_files));
+app.use('/frontend', express.static(js_files));
+
 
 app.get('/', (req: Request, res: Response) => {
-    res.status(200).sendFile('home.html', { root: path.join(webPagesPath, 'home') });
+    res.status(200).sendFile('home.html', { root: path.join(html_css_files, 'home') });
 });
 
 // 
