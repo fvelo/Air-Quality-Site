@@ -21,26 +21,24 @@ This repository contains a Node.js/TypeScript back-end API and a static front-en
 
 - 🔄 **Real-Time Data Ingestion** from your air-quality sensor  
 - 📊 **Interactive Charts & Historical Trends**  (in the future)
-- 🗄️ **SQL-Backed Storage** (MySQL)
+- 🗄️ **SQL-Backed Storage** (MariaDB)
 - ⚙️ **TypeScript-Powered Express API**  
 - 🌐 **Static HTML/CSS Front-End**  
 
 ## Tech Stack
 
 - **Node.js** & **Express** (API server)  
-- **TypeScript** & **JavaScript**  
-- **SQL** database (MySQL)  
-- **HTML/CSS/TypeScript** front-end in `public/webpages`  
+- **TypeScript** in src  
+- **SQL** database (MariaDB)  
+- **HTML/CSS** front-end in `public/webpages`
 - **dotenv** for environment-based configuration  
-- **Docker** (optional)  
+- **Docker**   
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) v22.14.0  
-- npm
-- A running SQL database instance
+- Docker instance
 
 ### Installation
 
@@ -48,17 +46,13 @@ This repository contains a Node.js/TypeScript back-end API and a static front-en
    ```bash
    git clone https://github.com/fvelo/Air-Quality-Site.git
    cd Air-Quality-Site
-   ```
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+   ```   
 ### Configuration
 1. **Copy the example env file**
    ```bash
    cp .env.example .env
    ```
-2. ***Edit .env and fill in your credentials and settings:***
+2. **Edit .env and fill in your credentials and settings:**
    ```bash
    DB_HOST=localhost
    DB_PORT=5432
@@ -68,11 +62,18 @@ This repository contains a Node.js/TypeScript back-end API and a static front-en
    PORT=3000
    ```
 ### Running locally
-  1. For dev with nodemon
+  1. Build image
      ```bash
-      npm run build
-     ```
-  2. In docker
+      docker build -t air-quality-fullstack .
+      ```
+  2. Run it with yaml
      ```bash
-     npm run build
+     service:
+       air-quality-fullstack:
+         container_name: air-quality-fullstack
+         build: .
+         image: air-quality-fullstack:latest
+         ports:
+            - "3000:3000"
+         restart: always
      ```
