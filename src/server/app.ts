@@ -14,8 +14,7 @@ dotenv.config();
 const express = require('express');
 const path = require('path');
 const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
-// const logger = require(path.join('../helper', 'logger.ts'));
-
+import { rateLimit } from 'express-rate-limit'
 
 // 
 // Initializing server
@@ -39,12 +38,20 @@ app.use(express.urlencoded({ extended: true })); //this middleware automatically
 const html_css_files: string = path.join('public', 'webpages');
 const js_files: string = path.join(__dirname, '../', 'frontend');
 
-
 // 
 // Middlewares
 // 
 
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 300, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+    message: 'Request limit reached',
+})
 
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
 
 // 
 // Static web pages endpoints
