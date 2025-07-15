@@ -74,7 +74,7 @@ app.get('/api/v0/last-entry-data', async (req: Request, res: Response) => {
 
 // insert air data in db
 app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
-    type reqAirData = {
+    type ReqAirData = {
         temperature: number,
         humidity: number,
         pm1: number,
@@ -85,8 +85,23 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
         apiPassword: string
     }
 
-    const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body as reqAirData;
+    function isValidAirData(body: any){
+        return (
+            !isNaN(body.temperature) && // if it's not 'not a number', it is a number
+            !isNaN(body.humidity) &&
+            !isNaN(body.pm1) &&
+            !isNaN(body.pm2_5) &&
+            !isNaN(body.pm10) &&
+            !isNaN(body.co2) &&
+            !isNaN(body.voc) &&
+            typeof body.apiPassword === 'string'
+        );
+    }
 
+    if(!isValidAirData(req.body)) return res.status(400).json({isSuccess: false, message: 'Invalid body type'});
+
+    const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body as ReqAirData;
+    
     // check if data comes from a secure source
     if (apiPassword !== process.env.API_PASSWORD) return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
 
