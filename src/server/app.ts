@@ -9,10 +9,13 @@ import { NextFunction, Request, Response } from "express";
 //
 
 import dotenv from 'dotenv';
+import logger from "../helper/logger";
 dotenv.config();
 const express = require('express');
 const path = require('path');
 const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
+// const logger = require(path.join('../helper', 'logger.ts'));
+
 
 // 
 // Initializing server
@@ -20,6 +23,7 @@ const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
 
 const app = express();
 app.listen(process.env.PORT, console.log(`Server listening on http://localhost:${process.env.PORT}...`));
+logger.info(`Server listening on http://localhost:${process.env.PORT}...`);
 
 // 
 // Decode json from post API resquest
@@ -66,9 +70,11 @@ app.get('/api/v0/last-entry-data', async (req: Request, res: Response) => {
         const sqlQuery: string = 'SELECT temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
         const queryResult: any[] = await handleSqlQuery(sqlQuery);
         const airData: object = queryResult[0];
+        // logger.debug('Successfully sent air data to client');
         res.status(200).json({ isSuccess: true, data: airData });
     } catch (error) {
-        res.status(400).json({ isSuccess: false, message: error });
+        logger.error('DB error: ', error);
+        res.status(500).json({ isSuccess: false, message: 'Internal error' });
     }
 });
 
@@ -98,20 +104,28 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
         );
     }
 
-    if(!isValidAirData(req.body)) return res.status(400).json({isSuccess: false, message: 'Invalid body type'});
+    if(!isValidAirData(req.body)){
+        logger.error('Attempt to insert body with wrong types');
+        return res.status(400).json({isSuccess: false, message: 'Invalid body type'});
+    }
 
     const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body as ReqAirData;
     
     // check if data comes from a secure source
-    if (apiPassword !== process.env.API_PASSWORD) return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
+    if (apiPassword !== process.env.API_PASSWORD){
+        logger.error('Suspicious attempt to insert data with wrong password');
+        return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
+    }
 
     try {
         // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
         const sqlQuery: string = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
         const valuesToEscape: number[] = [temperature, humidity, pm1, pm2_5, pm10, co2, voc]
         const queryResult: any[] = await handleSqlQuery(sqlQuery, valuesToEscape);
+        // logger.debug('Successfully inserted data: ', queryResult);
         res.status(200).json({ isSuccess: true, message: 'Insert successful' });
     } catch (error) {
-        res.status(400).json({ isSuccess: false, message: error });
+        logger.error('DB error: ', error);
+        res.status(500).json({ isSuccess: false, message: 'Internal server error' });
     }
 });
