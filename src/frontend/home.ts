@@ -2,19 +2,23 @@
 // COSTANTS
 // 
 
-const apiEndpoint: string = '/api/v0/last-entry-data';
+// const apiEndpoint: string = '/api/v0/last-entry-data';
+const apiEndpoints = {
+    lastEntryData: '/api/v0/last-entry-data',
+    graphsData: '/api/v0/graphs-data',
+}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const airQualityData = await requestAirQualityData(apiEndpoint);
+    const airQualityData = await requestAirQualityData(apiEndpoints.lastEntryData);
     // console.log(airQualityData);
     popolateDisplayWithData(airQualityData);
     setInterval( async () => {
-        const airQualityData = await requestAirQualityData(apiEndpoint);
+        const airQualityData = await requestAirQualityData(apiEndpoints.lastEntryData);
         // console.log(airQualityData);
         popolateDisplayWithData(airQualityData);
         // console.log('in interval');
-    }, 1000 * 10); // every 10 seconds
-
+    }, 1000 * 10); // {milliseconds * seconds} every 10 seconds
 });
 
 async function requestAirQualityData(apiEndpoint: string){
@@ -46,7 +50,7 @@ function popolateDisplayWithData(airQualityData: any){
     const overallScoreElement = document.getElementById('overall_score') as Element;
 
     const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry } = airQualityData;
-    temperatureElement.innerHTML = `${temperature} °C`;
+    temperatureElement.textContent = `${temperature} °C`;
     humidityElement.textContent = `${humidity} %`;
     pm0Element.textContent = `${pm1} µg/m³`;
     pm2_5Element.textContent = `${pm2_5} µg/m³`;
@@ -56,3 +60,4 @@ function popolateDisplayWithData(airQualityData: any){
     vocElement.textContent = `(wip)`;
     // dateTimeElement.textContent = `${dateTimeEntry}`;
 }
+
