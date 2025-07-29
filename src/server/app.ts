@@ -5,8 +5,8 @@
 import { NextFunction, Request, Response } from "express";
 
 // 
-//modules required for this porject
-//
+// modules required for this porject
+// 
 
 import dotenv from 'dotenv';
 import logger from "../helper/logger";
@@ -66,6 +66,10 @@ app.get('/', (req: Request, res: Response) => {
     res.status(200).sendFile('home.html', { root: path.join(html_css_files, 'home') });
 });
 
+app.get('/login', (req: Request, res: Response) => {
+    res.status(200).sendFile('login.html', { root: path.join(html_css_files, 'login') });
+});
+
 // 
 // API REST
 // 
@@ -73,8 +77,8 @@ app.get('/', (req: Request, res: Response) => {
 // get all data of last entry
 app.get('/api/v0/last-entry-data', async (req: Request, res: Response) => {
     try {
-        // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
-        const sqlQuery: string = 'SELECT temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry FROM airqualitydata WHERE entryId = ( SELECT MAX(entryId) FROM airqualitydata );';
+        // const sqlQuery: string = 'SELECT * FROM AirQualityData ORDER BY entryId DESC LIMIT 1;';
+        const sqlQuery: string = 'SELECT temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry FROM AirQualityData WHERE entryId = ( SELECT MAX(entryId) FROM AirQualityData );';
         const queryResult: any[] = await handleSqlQuery(sqlQuery);
         const airData: object = queryResult[0];
         // logger.debug('Successfully sent air data to client');
@@ -125,8 +129,8 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
     }
 
     try {
-        // const sqlQuery: string = 'SELECT * FROM airqualitydata ORDER BY entryId DESC LIMIT 1;';
-        const sqlQuery: string = 'INSERT INTO airqualitydata VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
+        // const sqlQuery: string = 'SELECT * FROM AirQualityData ORDER BY entryId DESC LIMIT 1;';
+        const sqlQuery: string = 'INSERT INTO AirQualityData VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, DEFAULT);'; // DEFAULT because the id is auto-increment and the timestamp is auto-generated
         const valuesToEscape: number[] = [temperature, humidity, pm1, pm2_5, pm10, co2, voc]
         const queryResult: any[] = await handleSqlQuery(sqlQuery, valuesToEscape);
         // logger.debug('Successfully inserted data: ', queryResult);
@@ -134,5 +138,28 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
     } catch (error) {
         logger.error('DB error: ', error);
         res.status(500).json({ isSuccess: false, message: 'Internal server error' });
+    }
+});
+
+app.post('/api/v0/auth/login', async (req: Request, res: Response) => {
+    const { username, password } = req.body;
+    const sqlQuery = 'SELECT Username, HashPassword FROM Account';
+
+    try {
+        // logger.info(`Username: ${username}, Password: ${password}`);
+        // console.log(`Username: ${username}, Password: ${password}`);
+
+        const queryResult = await handleSqlQuery(sqlQuery);
+        console.log(`queryresult:`, queryResult);
+
+        const { Username, HashPassword } = queryResult[0];
+        if(username !== Username && password !== HashPassword){
+            return res.status(403).json({ isSuccess: false, message: 'Wrong Email or Password' });
+        }
+
+        return res.status(200).json({ isSuccess: true, message: 'User identified' });
+    } catch (error) {
+        logger.error('DB error: ', error);
+        return res.status(500).json({ isSuccess: false, message: 'Internal server error' });
     }
 });

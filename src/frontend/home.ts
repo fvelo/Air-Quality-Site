@@ -2,19 +2,17 @@
 // COSTANTS
 // 
 
-// const apiEndpoint: string = '/api/v0/last-entry-data';
-const apiEndpoints = {
+const apiEndpoint = {
     lastEntryData: '/api/v0/last-entry-data',
     graphsData: '/api/v0/graphs-data',
 }
 
-
 document.addEventListener('DOMContentLoaded', async () => {
-    const airQualityData = await requestAirQualityData(apiEndpoints.lastEntryData);
+    const airQualityData = await requestAirQualityData(apiEndpoint.lastEntryData);
     // console.log(airQualityData);
     popolateDisplayWithData(airQualityData);
     setInterval( async () => {
-        const airQualityData = await requestAirQualityData(apiEndpoints.lastEntryData);
+        const airQualityData = await requestAirQualityData(apiEndpoint.lastEntryData);
         // console.log(airQualityData);
         popolateDisplayWithData(airQualityData);
         // console.log('in interval');
@@ -39,15 +37,15 @@ async function requestAirQualityData(apiEndpoint: string){
 }
 
 function popolateDisplayWithData(airQualityData: any){
-    const temperatureElement = document.getElementById('temperature') as Element;
-    const humidityElement = document.getElementById('humidity') as Element;
-    const pm0Element = document.getElementById('pm1') as Element;
-    const pm2_5Element = document.getElementById('pm2_5') as Element;
-    const pm10Element = document.getElementById('pm10') as Element;
-    const co2Element = document.getElementById('co2') as Element;
-    const vocElement = document.getElementById('voc') as Element;
-    const dateTimeElement = document.getElementById('time_last_refresh') as Element;
-    const overallScoreElement = document.getElementById('overall_score') as Element;
+    const temperatureElement = document.getElementById('temperature') as HTMLSpanElement;
+    const humidityElement = document.getElementById('humidity') as HTMLSpanElement;
+    const pm0Element = document.getElementById('pm1') as HTMLSpanElement;
+    const pm2_5Element = document.getElementById('pm2_5') as HTMLSpanElement;
+    const pm10Element = document.getElementById('pm10') as HTMLSpanElement;
+    const co2Element = document.getElementById('co2') as HTMLSpanElement;
+    const vocElement = document.getElementById('voc') as HTMLSpanElement;
+    const dateTimeElement = document.getElementById('time_last_refresh') as HTMLSpanElement;
+    const overallScoreElement = document.getElementById('overall_score') as HTMLSpanElement;
 
     const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, dateTimeEntry } = airQualityData;
     temperatureElement.textContent = `${temperature} °C`;
@@ -61,3 +59,4 @@ function popolateDisplayWithData(airQualityData: any){
     // dateTimeElement.textContent = `${dateTimeEntry}`;
 }
 
+export = {}; // I have done this so typescript treat this file like a module and don't gobalize every variable
