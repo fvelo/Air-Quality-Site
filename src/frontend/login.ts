@@ -10,9 +10,9 @@ const apiEndpoint = {
     login: '/api/v0/auth/login',
 }
 
-btnLogin.addEventListener('click', async function(e) {
+btnLogin.addEventListener('click', async (e) => {
     e.preventDefault();
-    const username: string | null = usernameElement.value;
+    const username: string = usernameElement.value.trim();
     const password: string = passwordElement.value;
     // console.log(`Email: ${email}, Password: ${password}`);
     try {

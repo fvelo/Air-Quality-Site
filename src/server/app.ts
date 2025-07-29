@@ -21,8 +21,9 @@ import { rateLimit } from 'express-rate-limit'
 // 
 
 const app = express();
-app.listen(process.env.PORT, console.log(`Server listening on http://localhost:${process.env.PORT}...`));
-logger.info(`Server listening on http://localhost:${process.env.PORT}...`);
+const PORT = process.env.PORT;
+app.listen(PORT, console.log(`Server listening on http://localhost:${PORT}...`));
+logger.info(`Server listening on http://localhost:${PORT}...`);
 
 // 
 // Decode json from post API resquest
@@ -150,7 +151,7 @@ app.post('/api/v0/auth/login', async (req: Request, res: Response) => {
         // console.log(`Username: ${username}, Password: ${password}`);
 
         const queryResult = await handleSqlQuery(sqlQuery);
-        console.log(`queryresult:`, queryResult);
+        // console.log(`queryresult:`, queryResult);
 
         const { Username, HashPassword } = queryResult[0];
         if(username !== Username && password !== HashPassword){
