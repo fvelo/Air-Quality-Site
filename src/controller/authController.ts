@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import handleSqlQuery from '../helper/handleSqlQuery';
 import { verifyPassword} from '../helper/crypt';
 import logger from "../helper/logger";
