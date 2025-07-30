@@ -5,15 +5,18 @@
 import { NextFunction, Request, Response } from "express";
 
 // 
-// modules required for this porject
+// modules required for this project
 // 
 
 import dotenv from 'dotenv';
-import logger from "../helper/logger";
 dotenv.config();
 const express = require('express');
+import logger from "../helper/logger";
+import session from "../helper/session";
+import handleSqlQuery from "../helper/handleSqlQuery";
+import { loginHandler, logoutHandler } from "../controller/authController";
+import { requireAuth } from "../middleware/auth";
 const path = require('path');
-const handleSqlQuery = require(path.join(__dirname, 'handleSqlQuery.js'));
 import { rateLimit } from 'express-rate-limit'
 
 // 
@@ -44,15 +47,16 @@ const js_files: string = path.join(__dirname, '../', 'frontend');
 // 
 
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 300, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
-	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 300, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
     message: 'Request limit reached',
-})
+});
 
-// Apply the rate limiting middleware to all requests.
-app.use(limiter)
+app.use(limiter); // Apply the rate limiting middleware to all requests
+app.use(session);
+app.use('/account', requireAuth);
 
 // 
 // Static web pages endpoints
@@ -62,12 +66,15 @@ app.use(limiter)
 app.use(`/`, express.static(html_css_files));
 app.use('/frontend', express.static(js_files));
 
-
 app.get('/', (req: Request, res: Response) => {
     res.status(200).sendFile('home.html', { root: path.join(html_css_files, 'home') });
 });
 
 app.get('/login', (req: Request, res: Response) => {
+    res.status(200).sendFile('login.html', { root: path.join(html_css_files, 'login') });
+});
+
+app.get('/account', (req: Request, res: Response) => {
     res.status(200).sendFile('login.html', { root: path.join(html_css_files, 'login') });
 });
 
@@ -103,7 +110,7 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
         apiPassword: string
     }
 
-    function isValidAirData(body: any){
+    function isValidAirData(body: any) {
         return (
             !isNaN(body.temperature) && // if it's not 'not a number', it is a number
             !isNaN(body.humidity) &&
@@ -116,15 +123,15 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
         );
     }
 
-    if(!isValidAirData(req.body)){
+    if (!isValidAirData(req.body)) {
         logger.error('Attempt to insert body with wrong types');
-        return res.status(400).json({isSuccess: false, message: 'Invalid body type'});
+        return res.status(400).json({ isSuccess: false, message: 'Invalid body type' });
     }
 
     const { temperature, humidity, pm1, pm2_5, pm10, co2, voc, apiPassword } = req.body as ReqAirData;
-    
+
     // check if data comes from a secure source
-    if (apiPassword !== process.env.API_PASSWORD){
+    if (apiPassword !== process.env.API_PASSWORD) {
         logger.error('Suspicious attempt to insert data with wrong password');
         return res.status(400).json({ isSuccess: false, message: 'Wrong password' });
     }
@@ -142,25 +149,13 @@ app.post('/api/v0/insert-air-data', async (req: Request, res: Response) => {
     }
 });
 
-app.post('/api/v0/auth/login', async (req: Request, res: Response) => {
-    const { username, password } = req.body;
-    const sqlQuery = 'SELECT Username, HashPassword FROM Account';
+app.post('/api/v0/auth/login', loginHandler);
+app.post('/api/v0/auth/logout', logoutHandler);
 
-    try {
-        // logger.info(`Username: ${username}, Password: ${password}`);
-        // console.log(`Username: ${username}, Password: ${password}`);
-
-        const queryResult = await handleSqlQuery(sqlQuery);
-        // console.log(`queryresult:`, queryResult);
-
-        const { Username, HashPassword } = queryResult[0];
-        if(username !== Username && password !== HashPassword){
-            return res.status(403).json({ isSuccess: false, message: 'Wrong Email or Password' });
-        }
-
-        return res.status(200).json({ isSuccess: true, message: 'User identified' });
-    } catch (error) {
-        logger.error('DB error: ', error);
-        return res.status(500).json({ isSuccess: false, message: 'Internal server error' });
+app.get('/api/v0/auth/me', (req: Request, res: Response) => {
+    if (req.session?.isAuth) {
+        res.json({ isAuth: req.session.isAuth, user: req.session.user });
+    } else {
+        res.json({ isAuth: false });
     }
 });

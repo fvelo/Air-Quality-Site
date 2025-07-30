@@ -11,8 +11,13 @@
 
 <body>
     <header>
-        <h1>Air Quality Dashboard</h1>
-        <p class="description">Live data from my DIY air quality sensor setup</p>
+        <div class="header-left">
+            <h1>Air Quality Dashboard</h1>
+            <p class="description">Live data from my DIY air quality sensor setup</p>
+        </div>
+        <nav class="user-menu">
+            <!-- JS will inject either “Login” or “Account | Logout” -->
+        </nav>
     </header>
 
     <div class="data-grid">
@@ -45,12 +50,18 @@
     <div class="explanation">
         <p><strong>Temperature:</strong> Indicates the ambient air temperature in degrees Celsius.</p>
         <p><strong>Humidity:</strong> Shows the percentage of water vapor present in the air.</p>
-        <p><strong>PM1:</strong> Ultra-fine particulate matter with diameter < 1μm; often from combustion sources. Healthy concentrations are < 10 µg/m³.</p>
-        <p><strong>PM2.5:</strong> Particulate matter < 2.5μm; can penetrate deep into lungs (e.g. vehicle exhaust, wildfires). Safe avarage concentrations for 24-hour period < 15 µg/m³.</p>
-        <p><strong>PM10:</strong> Particulate matter < 10μm; particles from dust, pollen, mold, and construction. Safe avarage concentrations for 24-hour period < 45 µg/m³.</p>
-        <p><strong>CO2:</strong> Carbon dioxide concentration in parts per million (ppm); safe indoor levels are 400–1000 ppm; above 1200 ppm you should ventilated the space.</p>
-        <p><strong>VOC:</strong> Organic chemicals from paints, cleaners, and off-gassing. Using a 1–500 VOC index, 1–100 is good, > 100 indicates elevated indoor VOCs.</p>
-        <p><strong>Overall Score:</strong> A calculated value summarizing the air quality based on all sensor data.</p>
+        <p><strong>PM1:</strong> Ultra-fine particulate matter with diameter < 1μm; often from combustion sources.
+                Healthy concentrations are < 10 µg/m³.</p>
+                <p><strong>PM2.5:</strong> Particulate matter < 2.5μm; can penetrate deep into lungs (e.g. vehicle
+                        exhaust, wildfires). Safe avarage concentrations for 24-hour period < 15 µg/m³.</p>
+                        <p><strong>PM10:</strong> Particulate matter < 10μm; particles from dust, pollen, mold, and
+                                construction. Safe avarage concentrations for 24-hour period < 45 µg/m³.</p>
+                                <p><strong>CO2:</strong> Carbon dioxide concentration in parts per million (ppm); safe
+                                    indoor levels are 400–1000 ppm; above 1200 ppm you should ventilated the space.</p>
+                                <p><strong>VOC:</strong> Organic chemicals from paints, cleaners, and off-gassing. Using
+                                    a 1–500 VOC index, 1–100 is good, > 100 indicates elevated indoor VOCs.</p>
+                                <p><strong>Overall Score:</strong> A calculated value summarizing the air quality based
+                                    on all sensor data.</p>
     </div>
 
     <footer>
@@ -61,4 +72,5 @@
     </footer>
     <script src="/frontend/home.js"></script>
 </body>
+
 </html>

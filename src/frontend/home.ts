@@ -5,13 +5,16 @@
 const apiEndpoint = {
     lastEntryData: '/api/v0/last-entry-data',
     graphsData: '/api/v0/graphs-data',
+    sessionData: '/api/v0/auth/me',
+    logout: '/api/v0/auth/logout'
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     const airQualityData = await requestAirQualityData(apiEndpoint.lastEntryData);
     // console.log(airQualityData);
     popolateDisplayWithData(airQualityData);
-    setInterval( async () => {
+    await renderUserMenu();
+    setInterval(async () => {
         const airQualityData = await requestAirQualityData(apiEndpoint.lastEntryData);
         // console.log(airQualityData);
         popolateDisplayWithData(airQualityData);
@@ -19,11 +22,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 1000 * 10); // {milliseconds * seconds} every 10 seconds
 });
 
-async function requestAirQualityData(apiEndpoint: string){
+async function requestAirQualityData(apiEndpoint: string) {
     const response: Response = await fetch(apiEndpoint);
     // console.log(response);
     // Check if the response is OK (status 200-299)
-    if(!response.ok) {
+    if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     const serverData: any = await response.json(); // Extracts the JSON data
@@ -36,7 +39,7 @@ async function requestAirQualityData(apiEndpoint: string){
     return airQualityData;
 }
 
-function popolateDisplayWithData(airQualityData: any){
+function popolateDisplayWithData(airQualityData: any) {
     const temperatureElement = document.getElementById('temperature') as HTMLSpanElement;
     const humidityElement = document.getElementById('humidity') as HTMLSpanElement;
     const pm0Element = document.getElementById('pm1') as HTMLSpanElement;
@@ -57,6 +60,35 @@ function popolateDisplayWithData(airQualityData: any){
     // vocElement.textContent = `${voc}`;
     vocElement.textContent = `(wip)`;
     // dateTimeElement.textContent = `${dateTimeEntry}`;
+}
+
+async function renderUserMenu() {
+    const nav = document.querySelector('.user-menu') as HTMLDivElement;
+    try {
+        const res = await fetch(apiEndpoint.sessionData);
+        if (!res.ok) throw new Error();
+        const { isAuth, user } = await res.json();
+        if (isAuth) {
+            nav.innerHTML = `
+                                <a href="#" id="account-link"><span>Hi, ${user.username}</span></a>
+                                <a href="#" id="logout-link">Logout</a>
+                            `;
+            document.getElementById('logout-link')!.addEventListener('click', async e => {
+                e.preventDefault();
+                await fetch(apiEndpoint.logout, { method: 'POST' });
+                window.location.reload();
+            });
+            document.getElementById('account-link')!.addEventListener('click', async e => {
+                e.preventDefault();
+                window.location.href = '/account';
+            });
+        } else {
+            nav.innerHTML = `<a href="/login">Login</a>`;
+        }
+    } catch {
+        // on error assume not logged in
+        nav.innerHTML = `<a href="/login">Login</a>`;
+    }
 }
 
 export = {}; // I have done this so typescript treat this file like a module and don't gobalize every variable
