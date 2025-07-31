@@ -26,6 +26,6 @@ export default session({
         maxAge: 1000 * 60 * 60 * 2, // 2 hours
         httpOnly: true,
         sameSite: true,
-        secure: true,
+        // secure: true,
     }
 });

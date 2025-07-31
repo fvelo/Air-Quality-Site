@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import handleSqlQuery from '../helper/handleSqlQuery';
-import { isPasswordCorrect } from '../helper/crypt';
+import { hashPassword, isPasswordCorrect } from '../helper/crypt';
 import logger from "../helper/logger";
 
 export async function loginHandler(req: Request, res: Response) {
@@ -20,7 +20,8 @@ export async function loginHandler(req: Request, res: Response) {
         }
 
         const user = queryResult[0];
-        if (isPasswordCorrect(user.HashPassword, password)) {
+        // console.log(`User data:`, user);
+        if (!isPasswordCorrect(password, user.HashPassword)) {
             return res.status(401).json({ isSuccess: false, message: 'Wrong Username or Password' });
         }
 

@@ -6,9 +6,9 @@ const passwordElement = document.getElementById('password') as HTMLInputElement;
 // CONST
 // 
 
-const apiEndpoint = {
+const api = {
     login: '/api/v0/auth/login',
-    sessionData: '/api/v0/auth/me',
+    sessionData: '/api/v0/session-data',
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -19,30 +19,34 @@ btnLogin.addEventListener('click', async (e) => {
     e.preventDefault();
     const username: string = usernameElement.value.trim();
     const password: string = passwordElement.value;
+    passwordElement.value = '';
     // console.log(`Email: ${email}, Password: ${password}`);
     try {
         const reqConfig = {
             method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({username, password})
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
         }
-        const res = await fetch(apiEndpoint.login, reqConfig);
-        if (!res.ok) throw new Error('Invalid credentials');
-        const { token } = await res.json();
-        localStorage.setItem('authToken', token);
+
+        const res = await fetch(api.login, reqConfig);
+
+        if (!res.ok) {
+            let resJson = await res.json();
+            throw new Error(resJson.message);
+        }
+
         window.location.href = '/';
-    } catch(err: any) {
-        alert(err.message || 'Login failed');
+    } catch (error: any) {
+        alert(error.message || 'Login failed');
     }
 });
 
 
 async function isAuthenticated() {
-    const nav = document.querySelector('.user-menu') as HTMLDivElement;
     try {
-        const res = await fetch(apiEndpoint.sessionData);
+        const res = await fetch(api.sessionData);
         if (!res.ok) throw new Error();
-        const { isAuth, user } = await res.json();
+        const { isAuth } = await res.json();
         if (isAuth) {
             window.location.href = '/account';
         }
