@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-export function verifyPassword(hashPassword: string , plain: string) {
+export function isPasswordCorrect(hashPassword: string , plain: string) {
     return bcrypt.compareSync(plain, hashPassword);
 }
 
