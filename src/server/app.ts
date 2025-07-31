@@ -16,6 +16,7 @@ import session from "../helper/session";
 import handleSqlQuery from "../helper/handleSqlQuery";
 import { loginHandler, logoutHandler } from "../controller/authController";
 import { lastDataEntry, insertAirData } from "../controller/airDataController";
+import { sessionData } from "../controller/sessionDataController";
 import { requireAuth } from "../middleware/auth";
 const path = require('path');
 import { rateLimit } from 'express-rate-limit'
@@ -91,10 +92,4 @@ app.post('/api/v0/auth/login', loginHandler);
 
 app.post('/api/v0/auth/logout', logoutHandler);
 
-app.get('/api/v0/auth/me', (req: Request, res: Response) => {
-    if (req.session?.isAuth) {
-        res.json({ isAuth: req.session.isAuth, user: req.session.user });
-    } else {
-        res.json({ isAuth: false });
-    }
-});
+app.get('/api/v0/session-data', sessionData);
