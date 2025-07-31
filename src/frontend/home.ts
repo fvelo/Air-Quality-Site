@@ -2,20 +2,20 @@
 // COSTANTS
 // 
 
-const apiEndpoint = {
+const api = {
     lastEntryData: '/api/v0/last-entry-data',
     graphsData: '/api/v0/graphs-data',
-    sessionData: '/api/v0/auth/me',
+    sessionData: '/api/v0/session-data',
     logout: '/api/v0/auth/logout'
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const airQualityData = await requestAirQualityData(apiEndpoint.lastEntryData);
+    const airQualityData = await requestAirQualityData(api.lastEntryData);
     // console.log(airQualityData);
     popolateDisplayWithData(airQualityData);
     await renderUserMenu();
     setInterval(async () => {
-        const airQualityData = await requestAirQualityData(apiEndpoint.lastEntryData);
+        const airQualityData = await requestAirQualityData(api.lastEntryData);
         // console.log(airQualityData);
         popolateDisplayWithData(airQualityData);
         // console.log('in interval');
@@ -65,7 +65,7 @@ function popolateDisplayWithData(airQualityData: any) {
 async function renderUserMenu() {
     const nav = document.querySelector('.user-menu') as HTMLDivElement;
     try {
-        const res = await fetch(apiEndpoint.sessionData);
+        const res = await fetch(api.sessionData);
         if (!res.ok) throw new Error();
         const { isAuth, user } = await res.json();
         if (isAuth) {
@@ -75,7 +75,7 @@ async function renderUserMenu() {
                             `;
             document.getElementById('logout-link')!.addEventListener('click', async e => {
                 e.preventDefault();
-                await fetch(apiEndpoint.logout, { method: 'POST' });
+                await fetch(api.logout, { method: 'POST' });
                 window.location.reload();
             });
             document.getElementById('account-link')!.addEventListener('click', async e => {
