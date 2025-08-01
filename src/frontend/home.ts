@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // console.log(airQualityData);
         popolateDisplayWithData(airQualityData);
         // console.log('in interval');
-    }, 1000 * 10); // {milliseconds * seconds} every 10 seconds
+    }, 1000 * 30); // {milliseconds * seconds} every 30 seconds
 });
 
 async function requestAirQualityData(apiEndpoint: string) {
